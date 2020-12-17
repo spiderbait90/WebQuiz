@@ -1,0 +1,41 @@
+﻿@model WebQuiz.Areas.User.Models.UserAnswerViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.User.Email Answers</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Quote Text
+        </th>
+        <th>
+            Correct Answer
+        </th>
+        <th>
+            User Answer
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.UserAnswers)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnswerAuthor)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

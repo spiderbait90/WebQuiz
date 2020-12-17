@@ -1,0 +1,63 @@
+﻿@using WebQuiz.Data.Models
+@using Newtonsoft.Json
+@model WebQuiz.Areas.User.Models.UserQuoteViewModel
+
+@{
+    ViewData["Title"] = "Random Quote";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div align="center">
+    <a class="btn btn-success" style="position: absolute; left: 10px;" asp-action="ChangeSetting">Change Quiz Mode</a>
+    <p style="text-align: center; text-size-adjust: 200%">Who Said It ?</p>
+    <hr />
+    @{
+        if (Model.Quote == null)
+        {
+            if (@Model.AppUser.AnsweredQuotes.Any())
+            {
+                <h3 align="center">You answered all the quotes that are in the Database!</h3>
+            }
+            else
+            {
+                <h3 align="center">At least 3 quotes in the database are needed for Quiz to function!</h3>
+            }
+        }
+        else
+        {
+            <h3 align="center">"@Model.Quote.Text.Replace("\"", "")"</h3>
+
+            if (Model.AppUser.Settings == Settings.Binary)
+            {
+
+                <h3 align="center" id="AuthorOption">-@Model.PossibleAnswers[Model.RndIndex]</h3>
+                <h3 align="center" id="Author" style="display: none;" id="Author">-@Model.Quote.Author</h3>
+                <hr />
+
+                <button type="submit" id="binaryBtn1" class="btn btn-info" onclick="funcBinary('@Model.Quote.Author','@Model.PossibleAnswers[Model.RndIndex]','yes')">Yes</button>
+                <button type="submit" id="binaryBtn2" class="btn btn-info" onclick="funcBinary('@Model.Quote.Author','@Model.PossibleAnswers[Model.RndIndex]','no')">No</button>
+
+            }
+            else
+            {
+                <h3 align="center" style="display: none;" id="Author">-@Model.Quote.Author</h3>
+                <hr />
+                <button class="btn btn-info" id="btnMulti1" onclick="funcMulti('@Model.Quote.Author','@Model.PossibleAnswers[1]')">@Model.PossibleAnswers[1]</button>
+                <button class="btn btn-info" id="btnMulti2" onclick="funcMulti('@Model.Quote.Author','@Model.PossibleAnswers[0]')">@Model.PossibleAnswers[0] </button>
+                <button class="btn btn-info" id="btnMulti3" onclick="funcMulti('@Model.Quote.Author','@Model.PossibleAnswers[2]')">@Model.PossibleAnswers[2] </button>
+            }
+        }
+    }
+
+</div>
+<div align="center">
+    <a asp-action="RandomQuote" class="btn btn-info" id="BtnToHide" style="display: none; position: absolute; right: 20px;">Next Quote =></a>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
